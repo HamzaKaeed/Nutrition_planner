@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Nutrition Pro</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#0b1220;color:#f1f5f9;font-family:Arial,sans-serif}
+.container{max-width:1050px;margin:auto}
+header{text-align:center;padding:25px}
+h1{color:#67e8b5}
+.card{background:#151f30;border:1px solid #29394e;border-radius:16px;padding:22px;margin:18px 0}
+h2{color:#67e8b5}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+label{display:block;color:#cbd5e1;margin:12px 0 7px}
+input,select{width:100%;padding:12px;background:#0d1727;color:white;border:1px solid #34445b;border-radius:9px}
+button{padding:13px;border:0;border-radius:9px;cursor:pointer;font-weight:bold}
+.primary{background:#67e8b5;color:#10251f;width:100%;margin-top:20px}
+.secondary{background:#263449;color:white;margin-top:12px}
+.pdf-btn{background:#67e8b5;color:#10251f;width:100%;margin-top:12px}
+.language-selector{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.language-selector button{background:#263449;color:white}
+.language-selector button.active{background:#67e8b5;color:#10251f}
+.result{display:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#0d1929;padding:15px;border-radius:10px}
+.stat strong{display:block;color:#67e8b5;font-size:20px;margin-top:8px}
+.meal{background:#0d1929;border:1px solid #29394e;border-radius:12px;padding:17px;margin:15px 0}
+.meal h3{color:#67e8b5}
+.macros{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.macros span{background:#1b3041;padding:8px;border-radius:8px;font-size:13px}
+.alts{background:#17283a;padding:13px;border-radius:10px;margin-top:12px}
+.note{font-size:13px;color:#94a3b8;line-height:1.8}
+.warning{background:#49351b;padding:15px;border-radius:10px;color:#ffe3a8;line-height:1.8;margin:15px 0}
+
+.pdf-header{display:none}
+
+@media(max-width:600px){
+.grid{grid-template-columns:1fr}
+.stats{grid-template-columns:1fr}
+}
+
+@page{
+size:A4;
+margin:15mm;
+}
+
+@media print{
+*{
+-webkit-print-color-adjust:exact!important;
+print-color-adjust:exact!important;
+}
+
+body{
+background:white!important;
+color:#111827!important;
+padding:0!important;
+font-family:Arial,sans-serif;
+}
+
+.container{
+max-width:100%!important;
+width:100%!important;
+}
+
+header{
+padding:10px 0!important;
+}
+
+header h1{
+color:#087f5b!important;
+font-size:25px;
+}
+
+header p{
+color:#333!important;
+}
+
+.card{
+background:white!important;
+color:#111!important;
+border:1px solid #ddd!important;
+box-shadow:none!important;
+padding:15px!important;
+margin:12px 0!important;
+}
+
+.card h2{
+color:#087f5b!important;
+}
+
+.language-selector,
+.primary,
+.secondary,
+.pdf-btn,
+.note,
+button{
+display:none!important;
+}
+
+.result{
+display:block!important;
+}
+
+.stats{
+grid-template-columns:repeat(3,1fr)!important;
+}
+
+.stat{
+background:#f1f5f9!important;
+color:#111!important;
+border:1px solid #ddd;
+}
+
+.stat strong{
+color:#087f5b!important;
+font-size:17px;
+}
+
+.meal{
+background:white!important;
+color:#111!important;
+border:1px solid #ddd!important;
+break-inside:avoid;
+page-break-inside:avoid;
+}
+
+.meal h3{
+color:#087f5b!important;
+}
+
+.macros span{
+background:#e8f5ef!important;
+color:#111!important;
+border:1px solid #d1e7dc;
+}
+
+.alts{
+background:#f3f4f6!important;
+color:#111!important;
+}
+
+.warning{
+background:#fff7e6!important;
+color:#704d00!important;
+border:1px solid #ead9a8;
+}
+
+.pdf-header{
+display:block!important;
+text-align:center;
+border-bottom:2px solid #087f5b;
+padding:10px 0;
+margin-bottom:15px;
+}
+
+input,select{
+border:1px solid #ddd!important;
+background:white!important;
+color:#111!important;
+}
+
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+<div class="language-selector">
+<button id="englishBtn" onclick="setLanguage('en')">🇬🇧 English</button>
+<button id="arabicBtn" onclick="setLanguage('ar')">🇪🇬 العربية</button>
+</div>
+
+<div style="font-size:40px;margin-top:15px">🥗</div>
+<h1>Smart Nutrition Pro</h1>
+<p id="subtitle">Your Personal Nutrition & Meal Planning System</p>
+</header>
+
+<section class="card">
+<h2 data-en="Personal Information" data-ar="البيانات الشخصية">Personal Information</h2>
+
+<div class="grid">
+<div><label data-en="Full Name" data-ar="الاسم الكامل">Full Name</label><input id="name"></div>
+<div><label data-en="Age (years)" data-ar="العمر (سنة)">Age</label><input id="age" type="number"></div>
+
+<div><label data-en="Gender" data-ar="الجنس">Gender</label>
+<select id="gender">
+<option value="male" data-en="Male" data-ar="ذكر">Male</option>
+<option value="female" data-en="Female" data-ar="أنثى">Female</option>
+</select></div>
+
+<div><label data-en="Height (cm)" data-ar="الطول (سم)">Height</label><input id="height" type="number"></div>
+<div><label data-en="Weight (kg)" data-ar="الوزن (كجم)">Weight</label><input id="weight" type="number"></div>
+<div><label data-en="Waist (cm)" data-ar="محيط الوسط (سم)">Waist</label><input id="waist" type="number"></div>
+<div><label data-en="Neck (cm)" data-ar="محيط الرقبة (سم)">Neck</label><input id="neck" type="number"></div>
+<div><label data-en="Hip (cm)" data-ar="محيط الأرداف (سم)">Hip</label><input id="hip" type="number"></div>
+<div><label data-en="Body Fat (%)" data-ar="نسبة الدهون (%)">Body Fat</label><input id="fat" type="number"></div>
+</div>
+</section>
+
+<section class="card">
+<h2 data-en="Fitness Goals" data-ar="الأهداف الرياضية">Fitness Goals</h2>
+
+<div class="grid">
+<div><label data-en="Choose Your Goal" data-ar="اختر هدفك">Goal</label>
+<select id="goal">
+<option value="cut" data-en="Cutting" data-ar="تنشيف">Cutting</option>
+<option value="bulk" data-en="Bulking" data-ar="تضخيم">Bulking</option>
+<option value="loss" data-en="Weight Loss" data-ar="تخسيس">Weight Loss</option>
+<option value="maintain" data-en="Maintenance" data-ar="ثبات الوزن">Maintenance</option>
+<option value="healthy" data-en="Healthy Eating" data-ar="تغذية متوازنة">Healthy Eating</option>
+</select></div>
+
+<div><label data-en="Activity Level" data-ar="مستوى النشاط">Activity Level</label>
+<select id="activity">
+<option value="1.2" data-en="Sedentary" data-ar="قليل الحركة">Sedentary</option>
+<option value="1.375" data-en="Light Activity" data-ar="نشاط خفيف">Light</option>
+<option value="1.55" data-en="Moderate Activity" data-ar="نشاط متوسط">Moderate</option>
+<option value="1.725" data-en="High Activity" data-ar="نشاط مرتفع">High</option>
+<option value="1.9" data-en="Very High Activity" data-ar="نشاط مرتفع جداً">Very High</option>
+</select></div>
+
+<div><label data-en="Training Days / Week" data-ar="أيام التمرين أسبوعياً">Training Days</label>
+<select id="days">
+<option>0</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+</select></div>
+
+<div><label data-en="Training Type" data-ar="نوع التمرين">Training Type</label>
+<select id="training">
+<option data-en="Gym / Weights" data-ar="جيم وأوزان">Gym</option>
+<option data-en="Cardio" data-ar="كارديو">Cardio</option>
+<option data-en="Mixed" data-ar="متنوع">Mixed</option>
+<option data-en="No Training" data-ar="بدون تمرين">None</option>
+</select></div>
+
+<div><label data-en="Meals Per Day" data-ar="عدد الوجبات يومياً">Meals Per Day</label>
+<select id="count">
+<option>3</option><option selected>4</option><option>5</option>
+</select></div>
+
+<div><label data-en="Diet Preference" data-ar="نوع النظام الغذائي">Diet Type</label>
+<select id="diet">
+<option value="all" data-en="All Foods" data-ar="متنوع">All Foods</option>
+<option value="veg" data-en="Vegetarian" data-ar="نباتي">Vegetarian</option>
+<option value="dairy" data-en="Dairy Free" data-ar="بدون ألبان">Dairy Free</option>
+</select></div>
+</div>
+</section>
+
+<section class="card">
+<h2 data-en="Food Preferences" data-ar="تفضيلات الطعام">Food Preferences</h2>
+
+<div class="grid">
+<div><label data-en="Food Allergies" data-ar="الحساسية الغذائية">Allergies</label><input id="allergy"></div>
+<div><label data-en="Disliked Foods" data-ar="الأطعمة غير المفضلة">Disliked Foods</label><input id="dislike"></div>
+<div><label data-en="Favorite Foods" data-ar="الأطعمة المفضلة">Favorites</label><input id="favorite"></div>
+<div><label data-en="Water Intake (Liters)" data-ar="كمية المياه (لتر)">Water</label><input id="water" type="number"></div>
+</div>
+</section>
+
+<button class="primary" onclick="generate()" data-en="Generate My Nutrition Plan" data-ar="إنشاء النظام الغذائي">Generate My Nutrition Plan</button>
+
+<section class="card result" id="result">
+
+<div class="pdf-header">
+<h1>🥗 Smart Nutrition Pro</h1>
+<p id="pdfSubtitle">Personal Nutrition Plan</p>
+</div>
+
+<h2 data-en="Your Nutrition Dashboard" data-ar="لوحة نظامك الغذائي">Your Nutrition Dashboard</h2>
+
+<div id="userSummary"></div>
+<div id="warning"></div>
+<div class="stats" id="stats"></div>
+<div id="mealList"></div>
+
+<button class="secondary" onclick="generate()" data-en="Regenerate Plan" data-ar="إنشاء خطة جديدة">Regenerate Plan</button>
+
+<button class="pdf-btn" onclick="savePDF()">
+📄 <span data-en="Download / Print PDF" data-ar="تحميل / طباعة PDF">Download / Print PDF</span>
+</button>
+
+</section>
+
+<p class="note">Smart Nutrition Pro © 2026</p>
+</div>
+
+<script>
+let lang="en";
+
+const database=[
+{name:"Breakfast",ar:"الإفطار",foods:[
+["Eggs + Baladi bread + vegetables","بيض + عيش بلدي + خضراوات",380,23,40,14],
+["Fava beans + bread + salad","فول + عيش + سلطة",420,19,65,10],
+["Oats + milk + banana","شوفان + حليب + موز",390,16,65,9]]},
+
+{name:"Snack",ar:"وجبة خفيفة",foods:[
+["Yogurt + fruit + nuts","زبادي + فاكهة + مكسرات",250,10,30,11],
+["Banana + peanut butter","موز + زبدة فول سوداني",260,8,32,13],
+["Cheese sandwich","ساندويتش جبنة",280,15,35,9]]},
+
+{name:"Lunch",ar:"الغداء",foods:[
+["Chicken + rice + salad","دجاج + أرز + سلطة",550,42,65,12],
+["Fish + potatoes + vegetables","سمك + بطاطس + خضراوات",520,35,60,14],
+["Meat + pasta + salad","لحم + مكرونة + سلطة",580,35,70,16]]},
+
+{name:"Dinner",ar:"العشاء",foods:[
+["Cottage cheese + bread + vegetables","جبنة قريش + خبز + خضراوات",350,27,35,10],
+["Eggs + potatoes + salad","بيض + بطاطس + سلطة",380,20,40,16],
+["Tuna sandwich","ساندويتش تونة",360,30,40,8]]},
+
+{name:"Extra Snack",ar:"وجبة إضافية",foods:[
+["Fruit + nuts","فاكهة + مكسرات",200,6,25,10],
+["Milk + banana","حليب + موز",220,9,35,5],
+["Peanut butter sandwich","ساندويتش زبدة فول سوداني",280,10,35,12]]}
+];
+
+let selectedFoods=[];
+
+function setLanguage(language){
+lang=language;
+document.documentElement.lang=language;
+document.documentElement.dir=language==="ar"?"rtl":"ltr";
+
+document.querySelectorAll("[data-en][data-ar]").forEach(el=>{
+el.textContent=el.dataset[language];
+});
+
+document.getElementById("subtitle").textContent=
+language==="ar"?"نظامك الغذائي الشخصي والتخطيط للوجبات":"Your Personal Nutrition & Meal Planning System";
+
+document.getElementById("pdfSubtitle").textContent=
+language==="ar"?"خطة التغذية الشخصية":"Personal Nutrition Plan";
+
+document.getElementById("englishBtn").classList.toggle("active",language==="en");
+document.getElementById("arabicBtn").classList.toggle("active",language==="ar");
+
+if(document.getElementById("result").style.display==="block"){
+renderMeals();
+renderUserSummary();
+}
+}
+
+function renderUserSummary(){
+const name=document.getElementById("name").value.trim();
+const age=document.getElementById("age").value;
+const height=document.getElementById("height").value;
+const weight=document.getElementById("weight").value;
+
+document.getElementById("userSummary").innerHTML=`
+<div class="meal">
+<h3>${lang==="ar"?"بيانات المستخدم":"User Information"}</h3>
+<p>${lang==="ar"?"الاسم":"Name"}: ${escapeHTML(name||"-")}</p>
+<p>${lang==="ar"?"العمر":"Age"}: ${age}</p>
+<p>${lang==="ar"?"الطول":"Height"}: ${height} cm</p>
+<p>${lang==="ar"?"الوزن":"Weight"}: ${weight} kg</p>
+</div>`;
+}
+
+function escapeHTML(value){
+return String(value).replace(/[&<>"']/g,char=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+}[char]));
+}
+
+function generate(){
+const age=+document.getElementById("age").value;
+const height=+document.getElementById("height").value;
+const weight=+document.getElementById("weight").value;
+const gender=document.getElementById("gender").value;
+const activity=+document.getElementById("activity").value;
+const goal=document.getElementById("goal").value;
+const count=+document.getElementById("count").value;
+
+if(!age||!height||!weight||age<1||height<50||weight<10){
+alert(lang==="ar"?"أدخل العمر والطول والوزن بشكل صحيح":"Enter valid age, height and weight");
+return;
+}
+
+if(age<18){
+document.getElementById("warning").innerHTML=lang==="ar"
+?'<div class="warning">لأن العمر أقل من 18 سنة، لا يحدد التطبيق عجزاً أو فائضاً للسعرات أو هدفاً لتغيير الوزن تلقائياً. هذه اقتراحات وجبات متوازنة، ويجب تقييم الاحتياجات الغذائية المناسبة للنمو بواسطة مختص.</div>'
+:'<div class="warning">For users under 18, the app does not prescribe calorie deficits or surpluses. These are balanced meal ideas, not a weight-change prescription. A qualified professional should assess individual growth needs.</div>';
+
+document.getElementById("stats").innerHTML=`
+<div class="stat"><small>${lang==="ar"?"العمر":"Age"}</small><strong>${age}</strong></div>
+<div class="stat"><small>${lang==="ar"?"الطول":"Height"}</small><strong>${height} cm</strong></div>
+<div class="stat"><small>${lang==="ar"?"الوزن":"Weight"}</small><strong>${weight} kg</strong></div>`;
+}else{
+document.getElementById("warning").innerHTML="";
+const bmr=10*weight+6.25*height-5*age+(gender==="male"?5:-161);
+const maintenance=Math.round(bmr*activity);
+const calories=goal==="maintain"||goal==="healthy"?maintenance:goal==="cut"||goal==="loss"?Math.round(maintenance*.9):Math.round(maintenance*1.1);
+
+document.getElementById("stats").innerHTML=`
+<div class="stat"><small>${lang==="ar"?"سعرات الثبات التقديرية":"Estimated Maintenance"}</small><strong>${maintenance}</strong></div>
+<div class="stat"><small>${lang==="ar"?"السعرات المستهدفة التقديرية":"Estimated Target"}</small><strong>${calories}</strong></div>
+<div class="stat"><small>${lang==="ar"?"الهدف":"Goal"}</small><strong>${document.getElementById("goal").selectedOptions[0].textContent}</strong></div>`;
+}
+
+selectedFoods=database.slice(0,count).map(meal=>({
+...meal,
+foods:meal.foods.map(food=>[...food])
+}));
+
+document.getElementById("result").style.display="block";
+renderUserSummary();
+renderMeals();
+document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+
+function renderMeals(){
+let total=[0,0,0,0];
+
+document.getElementById("mealList").innerHTML=selectedFoods.map((meal,i)=>{
+const f=meal.foods[0];
+total=total.map((v,j)=>v+f[j+2]);
+
+return `<div class="meal">
+<h3>${lang==="ar"?meal.ar:meal.name}</h3>
+<p>${lang==="ar"?"الوجبة المقترحة":"Suggested Meal"}: <b>${f[lang==="ar"?1:0]}</b></p>
+<div class="macros">
+<span>${f[2]} kcal</span>
+<span>${lang==="ar"?"بروتين":"Protein"}: ${f[3]}g</span>
+<span>${lang==="ar"?"كارب":"Carbs"}: ${f[4]}g</span>
+<span>${lang==="ar"?"دهون":"Fat"}: ${f[5]}g</span>
+</div>
+<div class="alts">
+<b>${lang==="ar"?"بدائل الطعام":"Food Alternatives"}</b>
+${meal.foods.slice(1).map(x=>`<p>${x[lang==="ar"?1:0]} — ${x[2]} kcal</p>`).join("")}
+</div>
+<button class="secondary no-print" onclick="changeMeal(${i})">${lang==="ar"?"تغيير الوجبة":"Change Meal"}</button>
+</div>`;
+}).join("")+
+`<div class="meal">
+<h3>${lang==="ar"?"إجمالي الوجبات":"Total Meals"}</h3>
+<div class="macros">
+<span>${total[0]} kcal</span>
+<span>${lang==="ar"?"بروتين":"Protein"}: ${total[1]}g</span>
+<span>${lang==="ar"?"كارب":"Carbs"}: ${total[2]}g</span>
+<span>${lang==="ar"?"دهون":"Fat"}: ${total[3]}g</span>
+</div>
+</div>`;
+}
+
+function changeMeal(i){
+const choices=selectedFoods[i].foods;
+const old=choices[0];
+const next=choices[Math.floor(Math.random()*(choices.length-1))+1];
+choices[0]=next;
+choices[choices.indexOf(next)]=old;
+renderMeals();
+}
+
+function savePDF(){
+if(!selectedFoods.length){
+alert(lang==="ar"?"أنشئ الخطة أولاً":"Generate your plan first");
+return;
+}
+window.print();
+}
+
+setLanguage("en");
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
